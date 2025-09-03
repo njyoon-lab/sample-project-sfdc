@@ -35,10 +35,10 @@ jobs:
 
       - name: Write certificate key to file
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest echo "${{ secrets.SERVER_KEY }}" > server.key
+          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest echo "${{ secrets.SERVER_KEY }}" > ./workspace/server.key
 
       - name: Authenticate with Dev Hub
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf org login jwt --client-id $SFDC_CLIENT_ID \
-          --jwt-key-file ./server.key --username $SFDC_USERNAME \
+          --jwt-key-file ./workspace/server.key --username $SFDC_USERNAME \
           --instance-url $SFDC_INSTACE_URL --alias my-hub-org --set-default-dev-hub
