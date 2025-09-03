@@ -40,5 +40,5 @@ jobs:
       - name: Authenticate with Dev Hub
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf org login jwt --client-id $SFDC_CLIENT_ID \
-          --jwt-key-file server.key --username $SFDC_USERNAME \
+          --jwt-key-file ./server.key --username $SFDC_USERNAME \
           --instance-url $SFDC_INSTACE_URL --alias my-hub-org --set-default-dev-hub
