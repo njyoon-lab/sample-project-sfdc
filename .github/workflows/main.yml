@@ -27,7 +27,7 @@ jobs:
 
       - name: List files in workspace
         run: |
-          ls -R ${{ github.workspace }}
+          ls -R .
 
 
       - name: Verify Salesforce CLI installation
