@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Write certificate key to file
-        run: echo "$SFDC_CERTIFICATE_KEY" > ${{ github.workspace }}/server.key
+        run: echo "$SFDC_CERTIFICATE_KEY" > server.key
 
 
       - name: List files in workspace
@@ -37,12 +37,12 @@ jobs:
       - name: Authenticate with Dev Hub
         run: |
           sf org login jwt --client-id $SFDC_CLIENT_ID \
-          --jwt-key-file ${{ github.workspace }}/server.key --username $SFDC_USERNAME \
+          --jwt-key-file server.key --username $SFDC_USERNAME \
           --instance-url $SFDC_INSTACE_URL --alias my-hub-org --set-default-dev-hub
 
       - name: Create Scratch ORG
         run: |
-          sf org create scratch --definition-file ${{ github.workspace }}/config/project-scratch-def.json --set-default --alias test-org -v my-hub-org
+          sf org create scratch --definition-file config/project-scratch-def.json --set-default --alias test-org -v my-hub-org
 
       - name: Deploy to Scratch ORG
         run: |
