@@ -41,3 +41,11 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf org login jwt --client-id $SFDC_CLIENT_ID \
           --jwt-key-file ./workspace/server.key --username $SFDC_USERNAME \
           --instance-url $SFDC_INSTACE_URL --alias my-hub-org --set-default-dev-hub
+
+      - name: Create Scratch ORG
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf org create scratch --definition-file ./workspace/config/project-scratch-def.json --set-default --alias test-org
+
+      - name: Deploy to Scratch ORG
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf project deploy start -w 60
