@@ -9,6 +9,12 @@ on:
 jobs:
   sfdc-job:
     runs-on: ubuntu-latest
+    env:
+      SFDC_USERNAME: ${{ secrets.SFDC_USERNAME }}
+      SFDC_CLIENT_ID: ${{ secrets.SFDC_CLIENT_ID }}
+      SFDC_CLIENT_SECRET: ${{ secrets.SFDC_CLIENT_SECRET }}
+      SFDC_CERTIFICATE_KEY: ${{ secrets.SFDC_CERTIFICATE_KEY }}
+      SFDC_INSTACE_URL: ${{ secrets.SFDC_INSTACE_URL }}
 
     steps:
       - name: Checkout code
@@ -26,3 +32,13 @@ jobs:
       - name: Verify Salesforce CLI installation
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sfdx --version
+
+      - name: Write certificate key to file
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest echo "${{ secrets.SERVER_KEY }}" > server.key
+
+      - name: Authenticate with Dev Hub
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf org login jwt --client-id $SFDC_CLIENT_ID \
+          --jwt-key-file server.key --username $SFDC_USERNAME \
+          --instance-url $SFDC_INSTACE_URL --alias my-hub-org --set-default-dev-hub
