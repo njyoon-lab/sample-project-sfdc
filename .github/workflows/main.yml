@@ -19,11 +19,10 @@ jobs:
           docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest
 
       - name: List files in workspace
-        run: ls -R ${{ github.workspace }}
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest ls -R ./workspace
+
 
       - name: Verify Salesforce CLI installation
-        run: sfdx --version
-
-      - name: Verify Salesforce CLI plugins
-        run: sfdx plugins --core
-        
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sfdx --version
