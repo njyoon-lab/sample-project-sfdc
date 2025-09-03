@@ -20,6 +20,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Write certificate key to file
+        run: echo "$SFDC_CERTIFICATE_KEY" > server.key
+
       - name: Run SFDC Docker Image
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest
@@ -32,10 +35,6 @@ jobs:
       - name: Verify Salesforce CLI installation
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sfdx --version
-
-      - name: Write certificate key to file
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest echo "${{ secrets.SERVER_KEY }}" > ./workspace/server.key
 
       - name: Authenticate with Dev Hub
         run: |
