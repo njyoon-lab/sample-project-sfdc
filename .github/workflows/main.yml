@@ -44,8 +44,8 @@ jobs:
 
       - name: Create Scratch ORG
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf org create scratch --definition-file ./workspace/config/project-scratch-def.json --set-default --alias test-org
+          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf org create scratch --definition-file ./workspace/config/project-scratch-def.json --set-default --alias test-org -v my-hub-org
 
       - name: Deploy to Scratch ORG
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf project deploy start -w 60
+          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf project deploy start -w 60 -o test-org
