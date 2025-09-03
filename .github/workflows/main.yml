@@ -46,4 +46,4 @@ jobs:
 
       - name: Deploy to Scratch ORG
         run: |
-          sf project deploy start -w 60 -o test-org
+          sf project deploy start -w 60 -o test-org -d ./force-app
