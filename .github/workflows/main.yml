@@ -9,6 +9,7 @@ on:
 jobs:
   sfdc-job:
     runs-on: ubuntu-latest
+    container: njyoon/sfdc:latest
     env:
       SFDC_USERNAME: ${{ secrets.SFDC_USERNAME }}
       SFDC_CLIENT_ID: ${{ secrets.SFDC_CLIENT_ID }}
@@ -23,29 +24,26 @@ jobs:
       - name: Write certificate key to file
         run: echo "$SFDC_CERTIFICATE_KEY" > server.key
 
-      - name: Run SFDC Docker Image
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest
 
       - name: List files in workspace
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest ls -R ./workspace
+          ls -R ./workspace
 
 
       - name: Verify Salesforce CLI installation
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sfdx --version
+          sf --version
 
       - name: Authenticate with Dev Hub
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf org login jwt --client-id $SFDC_CLIENT_ID \
+          sf org login jwt --client-id $SFDC_CLIENT_ID \
           --jwt-key-file ./workspace/server.key --username $SFDC_USERNAME \
           --instance-url $SFDC_INSTACE_URL --alias my-hub-org --set-default-dev-hub
 
       - name: Create Scratch ORG
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf org create scratch --definition-file ./workspace/config/project-scratch-def.json --set-default --alias test-org -v my-hub-org
+          sf org create scratch --definition-file ./workspace/config/project-scratch-def.json --set-default --alias test-org -v my-hub-org
 
       - name: Deploy to Scratch ORG
         run: |
-          docker run --rm -v ${{ github.workspace }}:/workspace njyoon/sfdc:latest sf project deploy start -w 60 -o test-org
+          sf project deploy start -w 60 -o test-org
