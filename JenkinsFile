@@ -5,6 +5,7 @@ pipeline {
         }
     }
     environment {
+        PATH = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
         MY_SECRET_FILE = credentials('SALESFORCE_SERVER_KEY')
         SF_USER = credentials('SF_CREDENTIALS')
         SF_CLIENT_ID = credentials('SF_CLIENT_ID')
