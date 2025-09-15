@@ -13,7 +13,9 @@ pipeline {
     stages {
         stage('Install Salesforce CLI') {
             steps {
-                bash -c "sf --version"
+                script {
+                    sf --version
+                }
             }
         }
         stage('Authenticate to Salesforce Org') {
