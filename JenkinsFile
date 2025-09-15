@@ -12,12 +12,12 @@ pipeline {
     stages {
         stage('Install Salesforce CLI') {
             steps {
-                sh 'sf --version'
+                bash 'sf --version'
             }
         }
         stage('Authenticate to Salesforce Org') {
             steps {
-                sh '''
+                bash '''
                    sf org login jwt --client-id $SF_CLIENT_ID_USR \
                    --jwt-key-file $MY_SECRET_FILE --username $SF_USER_USR \
                    --instance-url ${env.SFDC_ENV} --alias my-hub-org --set-default-dev-hub
@@ -26,7 +26,7 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                sh 'echo "Building Docker image..."'
+                bash 'echo "Building Docker image..."'
             }
         }
     }
