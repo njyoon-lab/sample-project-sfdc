@@ -1,0 +1,34 @@
+pipeline {
+    agent {
+        docker {
+            image 'njyoon/sfdc:latest' // Use your custom devhub container image
+            args '-u root:root' // Run as root to install CLI
+        }
+    }
+    environment {
+        MY_SECRET_FILE = credentials('SALESFORCE_SERVER_KEY')
+        SF_USER = credentials('SF_CREDENTIALS')
+        SF_CLIENT_ID = credentials('SF_CLIENT_ID')
+    }
+    stages {
+        stage('Install Salesforce CLI') {
+            steps {
+                sh 'sf --version'
+            }
+        }
+        stage('Authenticate to Salesforce Org') {
+            steps {
+                sh '''
+                   sf org login jwt --client-id $SF_CLIENT_ID_USR \
+                   --jwt-key-file $MY_SECRET_FILE --username $SF_USER_USR \
+                   --instance-url ${env.SFDC_ENV} --alias my-hub-org --set-default-dev-hub
+                '''
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                sh 'echo "Building Docker image..."'
+            }
+        }
+    }
+}
