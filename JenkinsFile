@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'njyoon/sfdc:latest' // Use your custom devhub container image
+            //args '-u root:root' // Run as root to install CLI
+        }
+    }
     environment {
         MY_SECRET_FILE = credentials('SALESFORCE_SERVER_KEY')
         SF_USER = credentials('SF_CREDENTIALS')
