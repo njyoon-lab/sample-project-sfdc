@@ -2,7 +2,6 @@ pipeline {
     agent {
         docker {
             image 'njyoon/sfdc:latest' // Use your custom devhub container image
-            args '-u root:root' // Run as root to install CLI
         }
     }
     environment {
