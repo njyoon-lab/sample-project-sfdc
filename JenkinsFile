@@ -19,8 +19,8 @@ pipeline {
         stage('Authenticate to Salesforce Org') {
             steps {
                 sh '''
-                   sf org login jwt --client-id $SF_CLIENT_ID_USR \
-                   --jwt-key-file $MY_SECRET_FILE --username $SF_USER_USR \
+                   sf org login jwt --client-id ${SF_CLIENT_ID_USR} \
+                   --jwt-key-file ${MY_SECRET_FILE} --username ${SF_USER_USR} \
                    --instance-url ${env.SFDC_ENV} --alias my-hub-org --set-default-dev-hub
                 '''
             }
