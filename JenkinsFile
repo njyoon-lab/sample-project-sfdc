@@ -1,34 +1,34 @@
 pipeline {
     agent {
         docker {
-            image 'njyoon/sfdc:latest'
+            image 'njyoon/sfdc:latest' // Use your custom devhub container image
+            args '-u root:root' // Run as root to install CLI
         }
     }
     environment {
-        PATH = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
         MY_SECRET_FILE = credentials('SALESFORCE_SERVER_KEY')
         SF_USER = credentials('SF_CREDENTIALS')
         SF_CLIENT_ID = credentials('SF_CLIENT_ID')
     }
     stages {
-        stage('Debugging Environment') {
-            steps {
-                // Try to print the PATH using the 'bash' step
-                bash 'echo "PATH is: $PATH"'
-                
-                // Try to find the location of the bash and sh executables
-                bash 'which bash'
-                bash 'which sh'
-                
-                // Try to run a simple command using its absolute path, bypassing PATH
-                sh '/bin/echo "Attempting to run /bin/echo..."'
-            }
-        }
         stage('Install Salesforce CLI') {
             steps {
-                bash 'sf --version'
+                sh 'sf --version'
             }
         }
-        // ... rest of your stages
+        stage('Authenticate to Salesforce Org') {
+            steps {
+                sh '''
+                   sf org login jwt --client-id $SF_CLIENT_ID_USR \
+                   --jwt-key-file $MY_SECRET_FILE --username $SF_USER_USR \
+                   --instance-url ${env.SFDC_ENV} --alias my-hub-org --set-default-dev-hub
+                '''
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                sh 'echo "Building Docker image..."'
+            }
+        }
     }
 }
