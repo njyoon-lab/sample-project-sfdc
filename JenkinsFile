@@ -23,7 +23,7 @@ pipeline {
                 sh '''
                    sf org login jwt --client-id ${SF_CLIENT_ID_USR} \
                    --jwt-key-file ${MY_SECRET_FILE} --username ${SF_USER_USR} \
-                   --instance-url ${SFDC_ENV} --alias my-hub-org --set-default-dev-hub
+                   --instance-url ${SFDC_ENV} --alias my-hub-org --set-default-dev-hub --set-default 
                 '''
             }
         }
