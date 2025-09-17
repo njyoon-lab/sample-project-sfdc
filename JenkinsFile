@@ -4,6 +4,7 @@ pipeline {
             filename 'Dockerfile' // Uses Dockerfile in the root of the repo
             dir '.' // Build context is the current directory
             additionalBuildArgs ''
+            args '-u root:root' // Run as root to install CLI
         }
     }
     environment {
