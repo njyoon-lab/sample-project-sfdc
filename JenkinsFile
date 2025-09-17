@@ -33,8 +33,7 @@ pipeline {
             }
             steps {
                 sh '''
-                   sf project deploy start --source-dir unpackaged
-                   --target-org my-hub-org --wait 20 --verbose --ignore-conflicts --dryrun -l RunSLocalTests
+                   sf project deploy start --target-org my-hub-org --wait 20 --verbose --ignore-conflicts --dryrun -l RunSLocalTests
                 '''
             }
         }
@@ -44,8 +43,7 @@ pipeline {
             }
             steps {
                 sh '''
-                   sf project deploy start --source-dir unpackaged
-                   --target-org my-hub-org --wait 20 --verbose --ignore-conflicts -l RunSLocalTests
+                   sf project deploy start --target-org my-hub-org --wait 20 --verbose --ignore-conflicts -l RunSLocalTests
                 '''
             }
         }
